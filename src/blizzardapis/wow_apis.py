@@ -15,7 +15,8 @@ class WowApi:
             'locale': 'en_US'
         }
         response = requests.get(f'{base_url}/profile/wow/character/{realmSlug}/{characterName}/equipment', headers=headers)
-        return json.loads(response.content)
+        payload = json.loads(response.content)
+        return payload
 
     def getCharacterMounts(realmSlug, characterName):
         token = Oauth.getToken()
@@ -26,7 +27,8 @@ class WowApi:
             'locale': 'en_US'
         }
         response = requests.get(f'{base_url}/profile/wow/character/{realmSlug}/{characterName}/collections/mounts', headers=headers)
-        return json.loads(response.content)
+        payload = json.loads(response.content)
+        return payload
 
     def getCharacter(realmSlug, characterName):
         token = Oauth.getToken()
@@ -37,4 +39,5 @@ class WowApi:
             'locale': 'en_US'
         }
         response = requests.get(f'{base_url}/profile/wow/character/{realmSlug}/{characterName}', headers=headers)
-        return json.loads(response.content)
+        payload = json.loads(response.content)
+        return payload
