@@ -6,6 +6,7 @@
 import discord
 import json
 from src.blizzardapis.wow_apis import WowApi
+from src.common.message_formatter import MessageFormatter
 
 with open("config.json") as config:
     config = json.load(config)
@@ -33,7 +34,7 @@ class MyClient(discord.Client):
             server = user_input[1]
             character = user_input[2]
             info = WowApi.character(server.lower(), character.lower())
-            custom_message = await self.build_character_info(info)
+            custom_message = await MessageFormatter.build_character_info(self, info)
             await self.send_message(message, custom_message)
         
         if message.content.startswith("!wow-gear"):
@@ -41,7 +42,7 @@ class MyClient(discord.Client):
             server = user_input[1]
             character = user_input[2]
             info = WowApi.character_equiptment(server.lower(), character.lower())
-            custom_message = await self.build_equiptment(info)
+            custom_message = await MessageFormatter.build_equiptment(self, info)
             await self.send_message(message, custom_message)
         
         if message.content.startswith("!wow-mounts"):
@@ -49,69 +50,18 @@ class MyClient(discord.Client):
             server = user_input[1]
             character = user_input[2]
             info = WowApi.character_mounts(server.lower(), character.lower())
-            custom_message = await self.build_mounts(info)
+            custom_message = await MessageFormatter.build_mounts(self, info)
             await self.send_message(message, custom_message)
 
         if message.content == "!help":
             print(message.content)
-            custom_message = "Functions"
-            for com in help_config:
-                desctiption = help_config[com]["description"]
-                example = help_config[com]["example"]
-                custom_message += f"\nCommand: {com}\tExample: {example}\tDescription: {desctiption}"
+            custom_message = await MessageFormatter.help_info(self, help_config)
             await self.send_message(message, custom_message)
         return
 
     async def send_message(self, message, custom_message):
         await message.channel.send(custom_message)
         return
-    
-    async def build_character_info(self, info):
-        faction = info["faction"]["name"]["en_US"]
-        guild = info["guild"]["name"]
-        title = info["active_title"]["name"]["en_US"]
-        hero_class = info["character_class"]["name"]["en_US"]
-        ilvl = info["equipped_item_level"]
-        custom_message = f"Faction: {faction}"
-        custom_message += f"\nGuild: {guild}"
-        custom_message += f"\nTitle: {title}"
-        custom_message += f"\nClass: {hero_class}"
-        custom_message += f"\nEquipped Ilvl = {ilvl}"
-        return custom_message
-    
-    async def help_info(self):
-        custom_message = ""
-        for com in help_config:
-            desctiption = help_config[com]["description"]
-            example = help_config[com]["example"]
-            custom_message += f"Command: {com}\tEx.: {example}\tDescription: {desctiption}\n"
-        return custom_message
-    
-    async def build_equiptment(self, info):
-        length = len(info["equipped_items"])
-        i = 0
-        custom_message = "Items\r"
-        while i < length:
-            item_slot = info["equipped_items"][i]["slot"]["name"]["en_US"]
-            item_quality = info["equipped_items"][i]["quality"]["name"]["en_US"] 
-            item_ilvl = info["equipped_items"][i]["level"]["value"]
-            item_name = info["equipped_items"][i]["name"]["en_US"]
-            custom_message += f"Slot: {item_slot}, Name: {item_name}, Quality: {item_quality}, Ilvl: {item_ilvl}\n"
-            i += 1
-        return custom_message
-
-    async def build_mounts(self, info):
-        length = len(info["mounts"])
-        i = 0
-        custom_message = "Mounts\r"
-        while i < length:
-            mount = info["mounts"][i]["mount"]["name"]["en_US"]
-            if(i == length - 1):
-                custom_message += f"{mount}"
-            else:
-                custom_message += f"{mount}, "
-            i += 1
-        return custom_message
 
 client = MyClient()
 client.run(TOKEN)
