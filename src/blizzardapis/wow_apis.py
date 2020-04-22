@@ -6,7 +6,7 @@ from ..common.oauth import Oauth
 base_url = 'https://us.api.blizzard.com'
 
 class WowApi:
-    def getCharacterEquiptment(realmSlug, characterName):
+    def character_equiptment(realmSlug, characterName):
         token = Oauth.getToken()
         headers = {
             'Authorization' : f'Bearer {token}',
@@ -18,7 +18,7 @@ class WowApi:
         payload = json.loads(response.content)
         return payload
 
-    def getCharacterMounts(realmSlug, characterName):
+    def character_mounts(realmSlug, characterName):
         token = Oauth.getToken()
         headers = {
             'Authorization' : f'Bearer {token}',
@@ -30,7 +30,7 @@ class WowApi:
         payload = json.loads(response.content)
         return payload
 
-    def getCharacter(realmSlug, characterName):
+    def character(realmSlug, characterName):
         token = Oauth.getToken()
         headers = {
             'Authorization' : f'Bearer {token}',

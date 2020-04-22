@@ -1,0 +1,15 @@
+{
+    "!wow-char": {
+        "example" : "!war-char server_name character_name",
+        "description": "Returns: Faction, Guild, Title, Class, Equiped Ilvl"
+    },
+    "!wow-mounts": {
+        "example" : "!war-mounts server_name character_name",
+        "description": "Returns: Comma separated list of characters mounts"
+    },
+    "!wow-gear": {
+        "example" : "!war-gear server_name character_name",
+        "description": "Returns: Equipped gear and item lvl of gear"
+    }
+    
+}
