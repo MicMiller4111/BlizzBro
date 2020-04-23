@@ -34,7 +34,7 @@ class MyClient(discord.Client):
             server = user_input[1]
             character = user_input[2]
             info = WowApi.character(server.lower(), character.lower())
-            custom_message = await MessageFormatter.build_character_info(self, info)
+            custom_message = MessageFormatter.build_character_info(info)
             await self.send_message(message, custom_message)
         
         if message.content.startswith("!wow-gear"):
@@ -42,7 +42,7 @@ class MyClient(discord.Client):
             server = user_input[1]
             character = user_input[2]
             info = WowApi.character_equiptment(server.lower(), character.lower())
-            custom_message = await MessageFormatter.build_equiptment(self, info)
+            custom_message = MessageFormatter.build_equiptment(info)
             await self.send_message(message, custom_message)
         
         if message.content.startswith("!wow-mounts"):
@@ -50,12 +50,13 @@ class MyClient(discord.Client):
             server = user_input[1]
             character = user_input[2]
             info = WowApi.character_mounts(server.lower(), character.lower())
-            custom_message = await MessageFormatter.build_mounts(self, info)
-            await self.send_message(message, custom_message)
+            custom_message = MessageFormatter.build_mounts(info)
+            for i in custom_message:
+                await self.send_message(message, i)
 
         if message.content == "!help":
             print(message.content)
-            custom_message = await MessageFormatter.help_info(self, help_config)
+            custom_message = MessageFormatter.help_info(help_config)
             await self.send_message(message, custom_message)
         return
 

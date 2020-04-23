@@ -1,20 +1,23 @@
 import json
 
 class MessageFormatter:
-    async def build_character_info(self, info):
+    def build_character_info(info):
+        custom_message = "Character:\r"
         faction = info["faction"]["name"]["en_US"]
-        guild = info["guild"]["name"]
-        title = info["active_title"]["name"]["en_US"]
+        custom_message += f"Faction: {faction}"
+        if(info.get("guild", False) != False):
+            guild = info["guild"]["name"]
+            custom_message += f"\nGuild: {guild}"
+        if(info.get("active_title", False) != False):
+            title = info["active_title"]["name"]["en_US"]
+            custom_message += f"\nTitle: {title}"
         hero_class = info["character_class"]["name"]["en_US"]
-        ilvl = info["equipped_item_level"]
-        custom_message = f"Faction: {faction}"
-        custom_message += f"\nGuild: {guild}"
-        custom_message += f"\nTitle: {title}"
         custom_message += f"\nClass: {hero_class}"
+        ilvl = info["equipped_item_level"]
         custom_message += f"\nEquipped Ilvl = {ilvl}"
         return custom_message
     
-    async def help_info(self, help_config):
+    def help_info(help_config):
         custom_message = "Functions"
         for com in help_config:
             desctiption = help_config[com]["description"]
@@ -22,7 +25,7 @@ class MessageFormatter:
             custom_message += f"\nCommand: {com}\tExample: {example}\tDescription: {desctiption}"
         return custom_message
     
-    async def build_equiptment(self, info):
+    def build_equiptment(info):
         length = len(info["equipped_items"])
         i = 0
         custom_message = "Items\r"
@@ -35,15 +38,26 @@ class MessageFormatter:
             i += 1
         return custom_message
 
-    async def build_mounts(self, info):
+    def build_mounts(info):
         length = len(info["mounts"])
         i = 0
+        message_array = []
         custom_message = "Mounts\r"
         while i < length:
             mount = info["mounts"][i]["mount"]["name"]["en_US"]
-            if(i == length - 1):
-                custom_message += f"{mount}"
-            else:
+            if(i != length - 1 and len(custom_message + mount) < 2000):
                 custom_message += f"{mount}, "
+            elif(i != length - 1 and len(custom_message + mount) > 1999):
+                message_array.append(custom_message)
+                custom_message = ""
+                custom_message += f"{mount}, "
+            elif(i == length - 1 and len(custom_message + mount) > 1999):
+                message_array.append(custom_message)
+                custom_message = ""
+                custom_message += f"{mount}"
+                message_array.append(custom_message)
+            else:
+                custom_message += f"{mount}"
+                message_array.append(custom_message)
             i += 1
-        return custom_message
+        return message_array
