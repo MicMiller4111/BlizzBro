@@ -2,7 +2,7 @@ import json
 
 class MessageFormatter:
     def build_character_info(info):
-        custom_message = "Character:\r"
+        custom_message = "Character\r"
         faction = info["faction"]["name"]["en_US"]
         custom_message += f"Faction: {faction}"
         if(info.get("guild", False) != False):
@@ -38,7 +38,7 @@ class MessageFormatter:
             i += 1
         return custom_message
 
-    def build_mounts(info):
+    def build_character_mounts(info):
         length = len(info["mounts"])
         i = 0
         message_array = []
@@ -61,3 +61,7 @@ class MessageFormatter:
                 message_array.append(custom_message)
             i += 1
         return message_array
+    
+    def build_mount(info):
+        custom_message = info["assets"][0]["value"]
+        return custom_message
