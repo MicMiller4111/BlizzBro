@@ -3,7 +3,7 @@
         "example" : "!war-char server_name character_name",
         "description": "Returns: Faction, Guild, Title, Class, Equiped Ilvl"
     },
-    "!wow-character-mounts": {
+    "!wow-mounts-char": {
         "example" : "!war-mounts server_name character_name",
         "description": "Returns: Comma separated list of characters mounts"
     },
@@ -14,5 +14,9 @@
     "!wow-mount": {
         "example" : "!war-mount mount_name",
         "description": "Returns: Picture of requested mount"
+    },
+    "!wow-server-status": {
+        "example" : "!war-server-status turalyon or !war-server-status area-52",
+        "description": "Returns: Server Status"
     }
 }

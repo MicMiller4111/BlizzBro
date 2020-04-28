@@ -65,3 +65,8 @@ class MessageFormatter:
     def build_mount(info):
         custom_message = info["assets"][0]["value"]
         return custom_message
+
+    def build_realm_status(info):
+        status = info["status"]["name"]["en_US"]
+        custom_message = f"Server is {status}"
+        return custom_message

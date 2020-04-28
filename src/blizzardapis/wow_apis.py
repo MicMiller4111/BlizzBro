@@ -93,3 +93,41 @@ class WowApi:
         response = requests.get(extractedUrl, headers=headers)
         payload = json.loads(response.content)
         return payload
+    
+    def realm(realmSlug):
+        token = Oauth.getToken()
+        headers = {
+            'Authorization' : f'Bearer {token}',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Battlenet-Namespace': 'dynamic-us',
+            'locale': 'en_US'
+        }
+        response = requests.get(f"{base_url}/data/wow/realm/{realmSlug}", headers=headers)
+        payload = json.loads(response.content)
+        return payload
+
+    def connected_realm(realmSlug):
+        payload = WowApi.realm(realmSlug)
+        extractedUrl = payload["connected_realm"]["href"]
+        token = Oauth.getToken()
+        headers = {
+            'Authorization' : f'Bearer {token}',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Battlenet-Namespace': 'dynamic-us',
+            'locale': 'en_US'
+        }
+        response = requests.get(extractedUrl, headers=headers)
+        payload = json.loads(response.content)
+        return payload
+
+    def check():
+        token = Oauth.getToken()
+        headers = {
+            'Authorization' : f'Bearer {token}',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Battlenet-Namespace': 'dynamic-us',
+            'locale': 'en_US'
+        }
+        response = requests.get("https://us.api.blizzard.com/data/wow/realm/index", headers=headers)
+        payload = json.loads(response.content)
+        return payload

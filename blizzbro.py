@@ -50,7 +50,7 @@ class MyClient(discord.Client):
             custom_message = MessageFormatter.build_equiptment(info)
             await self.send_message(message, custom_message)
         
-        if message.content.startswith("!wow-character-mounts"):
+        if message.content.startswith("!wow-mounts-char"):
             user_input = message.content.split(" ")
             server = user_input[1]
             character = user_input[2]
@@ -67,6 +67,13 @@ class MyClient(discord.Client):
                     mount += f"{i} "
             info = WowApi.mount(mounts[mount.rstrip()])
             custom_message = MessageFormatter.build_mount(info)
+            await self.send_message(message, custom_message)
+        
+        if message.content.startswith("!wow-server-status"):
+            user_input = message.content.split(" ")
+            server = user_input[1]
+            info = WowApi.connected_realm(server.lower())
+            custom_message = MessageFormatter.build_realm_status(info)
             await self.send_message(message, custom_message)
 
         if message.content == "!help":
