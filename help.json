@@ -16,7 +16,7 @@
         "description": "Returns: Picture of requested mount"
     },
     "!wow-server-status": {
-        "example" : "!war-server-status turalyon or !war-server-status area-52",
+        "example" : "!war-server-status turalyon or !war-server-status area-52 (spaces replaced by '-')",
         "description": "Returns: Server Status"
     }
 }
